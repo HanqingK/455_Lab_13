@@ -4,50 +4,146 @@
 // Spring 2019
 
 
-//*************************************************************************
-// Node class definition 
-// and declarations for functions on ListType
+#include <iostream>
 
-// Note: we don't need Node in Table.h
-// because it's used by the Table class; not by any Table client code.
+#include <cstdlib>
 
-// Note2: it's good practice to not put "using" statement in *header* files.  Thus
-// here, things from std libary appear as, for example, std::string
+#include <cassert>
 
-#ifndef LIST_FUNCS_H
-#define LIST_FUNCS_H
-  
+#include "listFuncs.h"
 
-struct Node {
-   std::string key;
-   int value;
+using namespace std;
 
-   Node *next;
+Node::Node(const string &theKey, int theValue) {
+	key = theKey;
+	value = theValue;
+	next = NULL;
+}
 
-   Node(const std::string &theKey, int theValue);
+Node::Node(const string &theKey, int theValue, Node *n) {
+	key = theKey;
+	value = theValue;
+	next = n;
+}
 
-   Node(const std::string &theKey, int theValue, Node *n);
-};
-
-
-typedef Node * ListType;
 
 //*************************************************************************
-//add function headers (aka, function prototypes) for your functions
-//that operate on a list here (i.e., each includes a parameter of type
-//ListType or ListType&).  No function definitions go in this file.
+// put the function definitions for your list functions below
+bool addFront(const string &target, int addData, ListType &list) {
+
+	if (contains(target, list)) {
+       cout << "The element " << target << " has already exist in the list" << endl;
+		return false;
+	}
+
+	Node * curr = new Node(target, addData);
+	curr->next = list;
+	list = curr;
+	return true;
+}
+
+bool addLast(const string &target, int addData, ListType &list) {
+	if (contains(target, list)) {
+       cout << "The element " << target << " has already exist in the list" << endl;
+		return false;
+	}
+	Node * curr = list;
+	Node * newNode = new Node(target, addData);
+
+	if (curr == NULL) {
+		list = newNode;
+		return true;
+	}
+	else {
+		while (curr->next != NULL) {
+			curr = curr->next;
+		}
+		curr->next = newNode;
+		return true;
+	}
+}
 
 
+bool deleteNode(const string &target, ListType &list) {
+	if (!contains(target, list)) {
+       cout << "The element " << target << " does not exist in the list" << endl;
+		return false;
+	}
+	Node * delPtr = NULL;
+	Node * curr = list;
+	Node * temp = curr;
+	while (curr != NULL && curr->key != target) {
+		temp = curr;
+		curr = curr->next;
+	}
 
+	if (curr == NULL) {
+		cout <<"The element "<< target << " was not in the list" << endl;
+		delete delPtr;
+		return false;
+	}
+	else {
+		delPtr = curr;
+		curr = curr->next;
+		temp->next = curr;
+       if (delPtr == list) {
+			list = list->next;
+			temp = NULL;
+		}
+		delete delPtr;
+		cout << "The element " << target << " was deleted" << endl;
+		return true;
+	}
+}
 
+bool contains(const string &target, ListType &list) {
+	Node * curr = list;
+	while (curr != NULL && curr->key != target) {
+		curr = curr->next;
+	}
+	if (curr == NULL) {
+       //cout << "The element " << target << " does not exist in the list" << endl;
+		return false;
+	}
+	else {
+        // cout << "The element " << target << " has already exist in the list" << endl;
+		return true;
+	}
 
+}
 
+ListType target(ListType &list, const string &target) {
+	if (list == NULL) {
+		return NULL;
+	}
+	Node * curr = list;
+	while (curr != NULL && curr->key != target) {
+		curr = curr->next;
+	}
+	if (curr == NULL) {
+		return NULL;
+	}
+	else {
+		return curr;
+	}
 
+}
 
+int size(ListType &list) {
+	int size = 0;
+	Node * curr = list;
+	while (curr != NULL) {
+		size++;
+		curr = curr->next;
+	}
+	return size;
+}
 
-
-
-
-
-// keep the following line at the end of the file
-#endif
+void printList(ListType &list) {
+	Node * curr = list;
+	while (curr != NULL) {
+		cout << curr->key << ": " << curr->value << ", ";
+		curr = curr->next;
+	}
+   cout << endl;
+}
