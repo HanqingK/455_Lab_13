@@ -26,8 +26,42 @@ using namespace std;
 
 int main() {
 
+	ListType list = NULL;
+	addFront( "world", 21, list); // addFront test
+	addFront("hello", 5, list);
+    cout<< "the result is: ";
+    addFront("hello", 5, list); //contains test
+    cout << "expected result is: " << "The element hello has already in the list"<< endl << endl;
 
+   cout<< "the result is: ";
+   printList(list); //  printList Test
+   cout << "expected result is: " << "hello: 5, world: 21"<< endl << endl;
 
+   
+ 
+	addLast("zhong", 11, list); // addLast test
+    cout<< "the result is: ";
+    addLast("zhong", 11, list); //test contains
+    cout << "expected result is: " << "The element zhong has already in the list"<< endl << endl;
 
+   cout<< "the result is: ";
+   printList(list); //  printList Test
+   cout << "expected result is: " << "hello: 5, world: 21, zhong: 11"<< endl << endl;
+
+   
+   deleteNode("hello",list);
+   deleteNode("zhong",list);
+   cout<< "the result is: ";
+   printList(list); //  printList Test
+   cout << "expected result is: " << "world: 21"<< endl << endl;
+   
+   
+  // ListType test = target(list, "hello");
+    //  cout << endl;
+   // printList(test);
+   
+    cout << size(list) << endl;
+   
+  
    return 0;
 }
